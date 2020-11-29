@@ -1,0 +1,72 @@
+clc, close all;
+ 
+s_img = imread('JAIME_GARCIA_Homework1/Question2/sombrero-galaxy-original.tif');
+%ss_img = imshow(s_img);
+ 
+sombrero_original = double(imread('JAIME_GARCIA_Homework1/Question2/sombrero-galaxy-original.tif'));
+%sombrero_show = imshow(sombrero_original);
+ 
+original_size = size(sombrero_original); %% 1548 2238
+ 
+% original_size_2 = size(sombrero_original(:,:,1));  1548 2238 %%
+ 
+%%initializing
+mu = double(0); %% mean
+sigma = double(16); %%standard deviation
+size_image_in_double = double(sombrero_original);
+noise = double(0);
+output25 = double(0);
+output50 = double(0);
+output100 = double(0);
+ 
+for i = 1:100
+    if (i >= 1 && i <= 25)
+        noise =+ sigma * randn(original_size) + mu;
+        %noise25_show = imshow(noise);
+        output25 =+ noise + size_image_in_double;
+        output25 =+ max(min(output25, 255),0);
+        
+    elseif (i >= 1 && i <=50)
+        noise =+ sigma * randn(original_size) + mu;
+        %noise50_show = imshow(noise);
+        output50 =+ noise + size_image_in_double;
+        output50 =+ max(min(output50, 255),0);
+ 
+    elseif (i >=1 && i <= 100)
+        noise =+ sigma * randn(original_size) + mu;
+        %noise100_show = imshow(noise);
+        output100 =+ noise + size_image_in_double;
+        output100 =+ max(min(output100, 255),0); 
+        
+    end
+end
+ 
+output25_show = imshow(output25);
+output50_show = imshow(output50);
+output100_show = imshow(output100);
+ 
+err25 = size_image_in_double - output25;
+mse25 = mean(err25(:).^2) %% 229.6070
+ 
+ 
+err50 = size_image_in_double - output50;
+mse50 = mean(err50(:).^2) %% 229.8772
+ 
+err100 = size_image_in_double - output100;
+mse100 = mean(err100(:).^2) %% 229.7724
+ 
+%questions
+ 
+    %2
+    % smallest at 25 iterations
+    % largest at 50 iterations
+ 
+    %3.
+    %what makes the noise Gaussian and white:
+    % In a single realiation, The Gaussian noise is made
+    % of Mean (mu) and standard deviation (sigma)
+    % the white is made of the intensity of the bit scale (255)
+    
+    %4. 
+    % The result of denoising does not improve with averaging
+    % more images
